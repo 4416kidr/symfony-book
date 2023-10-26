@@ -2,13 +2,22 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Admin;
 use App\Entity\Comment;
 use App\Entity\Conference;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class AppFixtures extends Fixture
 {
+    private $passwordHasherFactory;
+
+    public function __construct(PasswordHasherFactoryInterface $encoderFactory)
+    {
+        $this->passwordHasherFactory = $encoderFactory;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $amsterdam = new Conference();
@@ -29,6 +38,12 @@ class AppFixtures extends Fixture
         $comment1->setEmail('fabien@example.com');
         $comment1->setText('This was a great conference.');
         $manager->persist($comment1);
+
+        $admin = new Admin();
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setUsername('admin');
+        $admin->setPassword($this->passwordHasherFactory->getPasswordHasher(Admin::class)->hash('admin', null));
+        $manager->persist($admin);
 
         $manager->flush();
     }
