@@ -10,7 +10,7 @@ class ConferenceControllerTest extends PantherTestCase
 {
     public function testIndex()
     {
-        $client = static::createPantherClient(['external_base_uri' => $_SERVER['SYMFONY_PROJECT_DEFAULT_ROUTE_URL']]);
+        $client = static::createClient();
         $client->request('GET', '/');
 
         $this->assertResponseIsSuccessful();
