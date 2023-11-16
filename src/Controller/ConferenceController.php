@@ -33,7 +33,7 @@ class ConferenceController extends AbstractController
         $this->bus = $bus;
     }
 
-    #[Route('/{_locale}/', name: 'homepage')]
+    #[Route('/{_locale<en|fr>}/', name: 'homepage')]
     public function index(ConferenceRepository $conferenceRepository): Response
     {
         $response = new Response($this->twig->render('conference/index.html.twig', [
